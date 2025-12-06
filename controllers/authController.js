@@ -105,4 +105,3 @@ const logout = (req, res) => {
 };
 
 module.exports = { signup, login, logout };  // Export functions to be used in routes
-

@@ -1,16 +1,22 @@
 const express = require('express');
-const app = express();
 const dotenv = require('dotenv');
-dotenv.config();  // Loads environment variables from .env file
 const cookieParser = require('cookie-parser');
+const app = express();
 
-// Import routes
-const authRouter = require('./routes/authRoutes');  // Authentication routes
-const playlistRouter = require('./routes/playlistRoutes');  // Playlist routes
+// Load environment variables
+dotenv.config();
 
 // Middleware
-app.use(cookieParser());  // Cookie parsing middleware
-app.use(express.json());  // JSON parsing middleware
+app.use(cookieParser());
+app.use(express.json());
+
+// Import routes
+const authRouter = require('./routes/authRoutes');
+const playlistRouter = require('./routes/playlistRoutes');
+const songRoutes = require('./routes/songRoutes');
+const favouriteRouter = require('./routes/favouriteRoutes');  // Import favourites routes
+const shareRouter = require('./routes/shareRoutes');  // Import share playlist routes
+const adminRouter = require('./routes/adminRoutes');  // Import admin routes
 
 // Test database connection
 const { db } = require('./models/db.js');
@@ -22,9 +28,13 @@ db.get("SELECT 1", (err, row) => {
   }
 });
 
-// Using routes
-app.use('/auth', authRouter);  // Use the authentication routes
-app.use('/playlists', playlistRouter);  // Use the playlist routes
+// Use routes
+app.use('/auth', authRouter);
+app.use('/playlists', playlistRouter);
+app.use('/songs', songRoutes);
+app.use('/favourites', favouriteRouter);  
+app.use('/share', shareRouter);  
+app.use('/admin', adminRouter);  // Use admin routes
 
 // Export the app for use in server.js
 module.exports = { app };
