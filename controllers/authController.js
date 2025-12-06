@@ -27,10 +27,10 @@ const signup = (req, res) => {
     // Updated query to insert 'role' explicitly into the database
     const query = "INSERT INTO users (username, email, password, role) VALUES ('" + username + "', '" + email + "', '" + hashedPassword + "', '" + role + "')";
 
-    // Set a cookie to indicate user has signed up (though this may not be needed)
+    // Setting a cookie to indicate user has signed up 
     res.cookie('SignedUp', `${username} signed up`, {
       httpOnly: true,  // Prevent client-side access to the cookie
-      maxAge: 15 * 60 * 1000  // Cookie expires in 15 minutes
+      maxAge: 15 * 60 * 1000  
     });
 
     // Run the SQL query to create the user
@@ -57,7 +57,7 @@ const login = (req, res) => {
   }
 
   // SQL query to get user by email
-  const query = "SELECT * FROM users WHERE email = '" + email + "'";  // Be cautious with SQL injection risks
+  const query = "SELECT * FROM users WHERE email = '" + email + "'";  //
   const params = email;
 
   // Set a cookie indicating the user is logged in (not ideal, consider using tokens)

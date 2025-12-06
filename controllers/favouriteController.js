@@ -36,9 +36,6 @@ const addSongToFavorites = (req, res) => {
 const getFavoritesSongs = (req, res) => {
   const user_id = req.query.user_id;
 
-  if (!user_id) {
-    return res.status(400).json({ error: "User ID is required" });
-  }
 
   const query = "SELECT id, title, artist FROM songs JOIN favorites ON songs.id = favorites.song_id WHERE favorites.user_id = ?";
   const params = [user_id];
