@@ -9,6 +9,9 @@ dotenv.config();
 // Middleware
 app.use(cookieParser());
 app.use(express.json());
+const { normalizeInput } = require('./middlewares/validators');
+app.use(normalizeInput);
+
 
 // Import routes
 const authRouter = require('./routes/authRoutes');

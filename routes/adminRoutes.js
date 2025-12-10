@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
-
-// Import the controller functions
+const { protect } = require('../middlewares/authMiddleware');
 const { updateUserRole } = require('../controllers/adminController');
 
-// Route to update a user's role (admin (me) only)
-router.put('/update-role:id', updateUserRole);
+// PUT /admin/users/:id/role
+router.put('/users/:id/role', protect, updateUserRole);
 
 module.exports = router;

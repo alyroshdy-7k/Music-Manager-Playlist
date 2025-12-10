@@ -66,7 +66,15 @@ const insertDummySongs = () => {
     { title: 'Dummy Song 2', artist: 'Dummy Artist 2', playlist_id: 1 },
     { title: 'Dummy Song 3', artist: 'Dummy Artist 3', playlist_id: 2 },
     { title: 'Dummy Song 4', artist: 'Dummy Artist 4', playlist_id: 2 },
-  ];
+
+    
+    { title: 'Dummy Song 5', artist: 'Dummy Artist 5', playlist_id: 1 },
+    { title: 'Dummy Song 6', artist: 'Dummy Artist 6', playlist_id: 1 },
+    { title: 'Dummy Song 7', artist: 'Dummy Artist 7', playlist_id: 2 },
+    { title: 'Dummy Song 8', artist: 'Dummy Artist 8', playlist_id: 2 },
+    { title: 'Dummy Song 9', artist: 'Dummy Artist 9', playlist_id: 1 },
+];
+
 
   dummySongs.forEach(song => {
     const query = "INSERT INTO songs (title, artist, playlist_id) VALUES (?, ?, ?)";
@@ -108,7 +116,19 @@ db.serialize(() => {
   });
 
   // Insert dummy songs (only run if the songs table is empty)
-  insertDummySongs();
+  db.get("SELECT COUNT(*) AS count FROM songs", (err, row) => {
+    if (err) {
+      console.error("Error checking songs count:", err.message);
+      return;
+    }
+
+    if (row.count === 0) {
+      console.log("Songs table is empty, inserting dummy songs...");
+      insertDummySongs();
+    } else {
+      console.log("Songs table already has data, skipping dummy insert.");
+    }
+  });
 });
 
 // Export db and table creation queries

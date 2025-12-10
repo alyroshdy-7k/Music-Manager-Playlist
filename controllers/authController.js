@@ -111,6 +111,31 @@ const login = (req, res) => {
   });
 };
 
+// Make current logged-in user an admin (DEV ONLY,)
+const makeMeAdmin = (req, res) => {
+  const userId = req.user.userId; // from JWT
+
+  if (!userId) {
+    return res.status(401).json({ error: "Not logged in" });
+  }
+
+  const query = "UPDATE users SET role = 'admin' WHERE id = ?";
+  const params = [userId];
+
+  db.run(query, params, function (err) {
+    if (err) {
+      console.log("Error making user admin:", err);
+      return res.status(500).json({ error: "Database error while making admin" });
+    }
+
+    if (this.changes === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.status(200).json({ message: "You are now an admin. Please log in again to get a new admin token." });
+  });
+};
+
 
 // Logout route handler
 const logout = (req, res) => {
@@ -118,4 +143,4 @@ const logout = (req, res) => {
   res.status(200).json({ message: "Logged out successfully" });
 };
 
-module.exports = { signup, login, logout };  // Export functions to be used in routes
+module.exports = { signup, login, logout, makeMeAdmin }; 
