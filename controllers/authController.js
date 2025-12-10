@@ -23,7 +23,7 @@ const signup = (req, res) => {
       console.log(err);  // Log error
       return res.status(500).json({ error: "Error hashing password" });
     }
-
+    
     // Updated query to insert 'role' explicitly into the database
     const query = "INSERT INTO users (username, email, password, role) VALUES ('" + username + "', '" + email + "', '" + hashedPassword + "', '" + role + "')";
 
@@ -56,15 +56,9 @@ const login = (req, res) => {
     return res.status(400).json({ error: "Email or password missing" });
   }
 
-  // SQL query to get user by email
-  const query = "SELECT * FROM users WHERE email = '" + email + "'";  //
-  const params = email;
-
-  // Set a cookie indicating the user is logged in (not ideal, consider using tokens)
-  res.cookie('LoggedIn', `${email} logged in`, {
-    httpOnly: true,
-    maxAge: 15 * 60 * 1000  // Cookie expires in 15 minutes
-  });
+  // SQL query to get user by email (now parameterized)
+  const query = "SELECT * FROM users WHERE email = ?";
+  const params = [email];
 
   // Fetch user from the database
   db.get(query, params, (err, row) => {
@@ -72,6 +66,7 @@ const login = (req, res) => {
       console.log(err);  // Log error
       return res.status(500).json({ error: "Error retrieving user" });
     }
+
     if (!row) {
       return res.status(400).json({ error: "Invalid email or password" });
     }
@@ -82,21 +77,40 @@ const login = (req, res) => {
         console.log(err);  // Log error
         return res.status(500).json({ error: "Error comparing passwords" });
       }
+
       if (!result) {
         return res.status(400).json({ error: "Invalid email or password" });
       }
 
+      // Set a cookie indicating the user is logged in (optional)
+      res.cookie('LoggedIn', `${email} logged in`, {
+        httpOnly: true,
+        maxAge: 15 * 60 * 1000  // Cookie expires in 15 minutes
+      });
+
       // If passwords match, sign a JWT token and return it with user data
-      const token = signToken(row.id, row.role);
+      let token;
+      try {
+        token = signToken(row.id, row.role);
+      } catch (e) {
+        console.log(e);
+        return res.status(500).json({ error: "Error generating token" });
+      }
 
       return res.status(200).json({
         message: "Login successful",
-        data: { id: row.id, username: row.username, email: row.email, role: row.role },
-        token,  // Return token for authentication
+        data: {
+          id: row.id,
+          username: row.username,
+          email: row.email,
+          role: row.role
+        },
+        token  // Return token for authentication
       });
     });
   });
 };
+
 
 // Logout route handler
 const logout = (req, res) => {

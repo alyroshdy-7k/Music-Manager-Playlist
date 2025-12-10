@@ -1,5 +1,5 @@
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('C:/Users/Aly/Desktop/musicManager.db'); // SQLite database for your app
+const db = new sqlite3.Database('musicManager.db'); // SQLite database for your app
 
 // SQL to create User Table
 const createUserTable = `

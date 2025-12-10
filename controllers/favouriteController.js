@@ -1,47 +1,59 @@
 const { db } = require('../models/db.js');  // Import the database connection
 
-// Create a favorites playlist for the user
+// Create a favourites playlist for the logged-in user
 const createFavoritesPlaylist = (req, res) => {
-  const user_id = req.body.user_id;  // Getting the user ID from the request body
-
-  if (!user_id) {
-    return res.status(400).json({ error: "User ID is required" });
-  }
+  const user_id = req.user.userId;   // from authMiddleware
 
   const query = "INSERT INTO playlists (name, user_id) VALUES (?, ?)";
-  const params = ['Favorites', user_id];
+  const params = ['Favourites', user_id];
 
-  db.run(query, params, function () {
+  db.run(query, params, function (err) {
+    if (err) {
+      console.log("Error creating favourites playlist:", err);
+      return res.status(500).json({ error: "Could not create favourites playlist" });
+    }
+
     res.status(201).json({ message: "Favorites playlist created.", id: this.lastID });
   });
 };
 
-// Add a song to the user's favorites playlist 
+// Add a song to the user's favourites
 const addSongToFavorites = (req, res) => {
-  const { song_id, user_id } = req.body;
+  const user_id = req.user.userId;   // from JWT
+  const { song_id } = req.body;
 
-  if (!song_id || !user_id) {
-    return res.status(400).json({ error: "Song ID and User ID are required." });
+  if (!song_id) {
+    return res.status(400).json({ error: "Song ID is required." });
   }
 
-  const query = "INSERT INTO favorites (song_id, user_id) VALUES (?, ?)";
+  const query = "INSERT INTO favourites (song_id, user_id) VALUES (?, ?)";
   const params = [song_id, user_id];
 
-  db.run(query, params, function () {
+  db.run(query, params, function (err) {
+    if (err) {
+      console.log("Error adding favourite:", err);
+      return res.status(500).json({ error: "Song could not be added to favourites." });
+    }
+
     res.status(201).json({ message: "Song added to favorites!" });
   });
 };
 
-// Get all songs in the user's favorites
+// Get all songs in the new logged-in user's favourites
 const getFavoritesSongs = (req, res) => {
-  const user_id = req.query.user_id;
+  const user_id = req.user.userId;   // from JWT
 
-
-  const query = "SELECT id, title, artist FROM songs JOIN favorites ON songs.id = favorites.song_id WHERE favorites.user_id = ?";
+  const query = `
+    SELECT songs.id, songs.title, songs.artist
+    FROM songs
+    JOIN favourites ON songs.id = favourites.song_id
+    WHERE favourites.user_id = ?
+  `;
   const params = [user_id];
 
   db.all(query, params, (err, rows) => {
     if (err) {
+      console.log("Error fetching favourites:", err);
       return res.status(500).json({ error: "Unable to fetch songs" });
     }
 
@@ -53,17 +65,15 @@ const getFavoritesSongs = (req, res) => {
   });
 };
 
-// Remove a song from the user's favorites 
+// Remove a song from the logged-in user's favourites 
 const removeSongFromFavorites = (req, res) => {
   const song_id = req.params.id;
+  const user_id = req.user.userId;   // from JWT
 
-  const query = "DELETE FROM favorites WHERE song_id = ?";
-  const params = [song_id];
+  const query = "DELETE FROM favourites WHERE song_id = ? AND user_id = ?";
+  const params = [song_id, user_id];
 
-  db.run(query, params, function () {
-    if (this.changes === 0) {
-      return res.status(404).json({ error: "Song not found in favorites." });
-    }
+  db.run(query, params, function (err) {
 
     res.status(200).json({ message: "Song removed from favorites." });
   });

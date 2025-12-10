@@ -4,7 +4,7 @@ const db = db_access.db;  // Access SQLite database instance
 const authRoutes = require('./routes/authRoutes');  // Import authRoutes
 const playlistRoutes = require('./routes/playlistRoutes');  // Import playlistRoutes
 
-const PORT = 3000;  // Port for server
+const PORT = 3001;  // Port for server
 
 // Create tables before starting the server
 db.serialize(() => {

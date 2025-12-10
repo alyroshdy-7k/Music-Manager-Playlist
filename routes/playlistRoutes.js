@@ -1,19 +1,21 @@
 const express = require('express');
 const router = express.Router();
 
-// Import the controller functions
-const { createPlaylist, getAllPlaylists, updatePlaylist, deletePlaylist } = require('../controllers/playlistController');
+// Controller functions
+const {
+  createPlaylist,
+  getAllPlaylists,
+  updatePlaylist,
+  deletePlaylist
+} = require('../controllers/playlistController');
 
-// Route to create a new playlist
-router.post('/', createPlaylist);
+// Auth middleware
+const { protect } = require('../middlewares/authMiddleware');
 
-// Route to get all playlists of a user
-router.get('/', getAllPlaylists);
-
-// Route to update a specific playlist
-router.put('/:id', updatePlaylist);
-
-// Route to delete a specific playlist
-router.delete('/:id', deletePlaylist);
+// All playlist routes are protected
+router.post('/', protect, createPlaylist);
+router.get('/', protect, getAllPlaylists);
+router.put('/:id', protect, updatePlaylist);
+router.delete('/:id', protect, deletePlaylist);
 
 module.exports = router;

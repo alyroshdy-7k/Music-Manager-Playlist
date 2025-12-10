@@ -1,19 +1,22 @@
 const express = require('express');
 const router = express.Router();
 
-// Import the controller functions
-const { addSongToPlaylist, getSongsForPlaylist, removeSongFromPlaylist } = require('../controllers/songController');
+const {
+  getAvailableSongs,
+  addSongToPlaylist,
+  getSongsForPlaylist,
+  removeSongFromPlaylist
+} = require('../controllers/songController');
 
-// Route to add a song to a playlist
-// POST request to /songs/add
-router.post('/add', addSongToPlaylist);
+const { protect } = require('../middlewares/authMiddleware');
 
-// Route to get all songs from a specific playlist
-// GET request to /songs/all?playlistId
-router.get('/all', getSongsForPlaylist);
+// Get all available songs user can choose from
+router.get('/available', protect, getAvailableSongs);
 
-// Route to remove a song from a playlist
-// DELETE request to /songs/remove/:id, where :id is the song id
-router.delete('/remove/:id', removeSongFromPlaylist);
+// Add existing song to playlist (by songId)
+router.post('/add', protect, addSongToPlaylist);
 
-module.exports = router;  // Export the router
+// Get songs in a playlist
+router.get('/all', protect, getSongsForPlaylist);
+
+module.exports = router;
