@@ -3,33 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title>Songs</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="container">
 
-        <h2>Available Songs</h2>
-        <p style="color:#c7b7e8;">Browse all available songs and add them to your playlists.</p>
+        <!-- Page Header -->
+        <h1 class="page-title">Songs</h1>
+        <p class="page-subtitle">Browse available songs or view songs inside your playlist</p>
 
-        <!-- Songs list -->
+        <!-- Available Songs -->
+        <h3 style="margin-top: 20px;">Available Songs</h3>
+        <p style="color:#c7b7e8; margin-bottom: 10px;">
+            Add songs directly into any of your playlists.
+        </p>
+
         <div id="availableSongsContainer" class="section"></div>
 
         <hr style="border: 1px solid #9a4aff33; margin: 25px 0;">
 
+        <!-- Songs in the selected playlist -->
         <h3>Songs in This Playlist</h3>
-        <p style="color:#c7b7e8;">These are the songs already inside the selected playlist.</p>
+        <p style="color:#c7b7e8; margin-bottom: 10px;">
+            These songs already belong to the chosen playlist.
+        </p>
 
-        <!-- Playlist Songs -->
         <div id="playlistSongsContainer" class="section"></div>
 
         <!-- Navigation -->
-        <button class="btn-secondary" onclick="window.location.href='home.html'" style="margin-top: 20px;">
+        <button 
+            class="btn-secondary" 
+            onclick="window.location.href='home.html'" 
+            style="margin-top: 20px;"
+        >
             Back to Home
         </button>
 
-        <button id="logoutBtn" style="background:#cc4b4b; margin-top: 10px;">
+        <button 
+            id="logoutBtn" 
+            style="background:#cc4b4b; margin-top: 10px;"
+        >
             Logout
         </button>
 

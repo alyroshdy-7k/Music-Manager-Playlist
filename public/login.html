@@ -11,7 +11,7 @@
 
 <body>
     <div class="container">
-        <h2>Welcome Back</h2>
+        <h2>Welcome to the Music Manager</h2>
         <p>Please log in to continue</p>
 
         <!-- Email -->
@@ -28,10 +28,16 @@
             placeholder="Enter your password"
         />
 
+        <!-- Admin mode checkbox -->
+        <label style="display:flex; align-items:center; gap:8px; margin:10px 0; color:#c7b7e8;">
+            <input type="checkbox" id="adminCheck" style="width:16px; height:16px;">
+            Login as Admin
+        </label>
+
         <!-- Login button -->
         <button id="loginBtn">Login</button>
 
-        <!-- Message (errors, etc.) -->
+        <!-- Message -->
         <p id="message" style="color: #ff8a8a; margin-top: 8px;"></p>
 
         <!-- Link to signup -->

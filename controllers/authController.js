@@ -155,6 +155,30 @@ const getMe = (req, res) => {
   });
 };
 
+// Get all users (Admin-only)
+const getAllUsers = (req, res) => {
+
+  // 🚨 IMPORTANT: Only admins allowed
+  if (req.user.role !== "admin") {
+    return res.status(403).json({ error: "Admins only" });
+  }
+
+  const query = "SELECT id, username, email, role FROM users";
+
+  db.all(query, [], (err, rows) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: "Error fetching users" });
+    }
+
+    return res.status(200).json({
+      message: "All users fetched",
+      users: rows
+    });
+  });
+};
+
+
 // Logout route handler
 const logout = (req, res) => {
   res.clearCookie('LoggedIn');
@@ -166,5 +190,6 @@ module.exports = {
   login,
   logout,
   makeMeAdmin,
-  getMe
+  getMe,
+  getAllUsers
 };

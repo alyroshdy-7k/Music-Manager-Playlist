@@ -95,8 +95,10 @@ document.getElementById("shareBtn").addEventListener("click", async () => {
             })
         });
 
-        const text = await res.text();
-        msg.innerText = text;
+        const data = await res.json();   // <-- FIX
+        msg.innerText = data.message;    // <-- now only shows the actual message
+
+        loadSharedPlaylists(); // refresh shared section
 
     } catch (err) {
         msg.innerText = "Could not share playlist.";

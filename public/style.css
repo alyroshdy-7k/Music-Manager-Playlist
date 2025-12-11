@@ -18,13 +18,33 @@ body {
 .container {
     width: 100%;
     max-width: 450px;
-    background: #2a2238; /* card background */
-    padding: 25px;
-    border-radius: 12px;
+    background: #2a2238;
+    padding: 30px;
+    border-radius: 14px;
     box-shadow: 0 0 25px rgba(154, 74, 255, 0.25);
 }
 
-/* HEADERS */
+/* ======================================= */
+/* PAGE TITLES (NEW + CLEARER) */
+/* ======================================= */
+
+.page-title {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #e9d0ff;
+    text-align: center;
+}
+
+.page-subtitle {
+    font-size: 15px;
+    font-weight: 400;
+    color: #c7b7e8;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* HEADERS (fallback) */
 h1, h2, h3, h4 {
     color: #d4b3ff;
     margin-bottom: 12px;
@@ -38,14 +58,14 @@ button {
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    background-color: #9a4aff; /* primary violet */
+    background-color: #9a4aff;
     color: white;
     font-size: 15px;
     transition: 0.2s ease-in-out;
 }
 
 button:hover {
-    background-color: #b88cff; /* lighter accent */
+    background-color: #b88cff;
     transform: translateY(-2px);
 }
 
@@ -74,13 +94,13 @@ input::placeholder {
     color: #c7b7e8;
 }
 
-/* PLAYLIST + SONG BOXES */
+/* ITEM BOXES (playlists, songs, etc.) */
 .item-box {
     background: #1f1a2e;
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 15px;
-    border: 1px solid #9a4aff33; /* subtle glow */
+    border: 1px solid #9a4aff33;
 }
 
 .item-box p {
@@ -99,7 +119,27 @@ a:hover {
     color: #ffffff;
 }
 
-/* SPACING FIX FOR SECTIONS */
+/* Section spacing */
 .section {
-    margin-top: 25px;
+    margin-top: 30px;
+}
+
+/* Remove box looks on the navigation links*/
+.nav-buttons a {
+    display: block;
+    width: 100%;
+    padding: 8px 0;
+
+    background: none;       /* remove background box */
+    border: none;           /* remove box effect */
+    color: #d4b3ff;         /* soft purple text */
+    font-size: 16px;
+    font-weight: 500;
+    text-align: left;       /* align cleanly */
+    margin-bottom: 6px;
+}
+
+.nav-buttons a:hover {
+    color: #ffffff;         /* brighter on hover */
+    text-decoration: underline;
 }

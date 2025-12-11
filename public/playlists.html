@@ -3,38 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <title>My Playlists</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="container">
-        <h2>Your Playlists</h2>
+
+        <!-- Page Header -->
+        <h1 class="page-title">Your Playlists</h1>
+        <p class="page-subtitle">Create, rename, delete or explore your playlists</p>
 
         <!-- Create Playlist Section -->
+        <h3 style="margin-top: 20px;">Create a New Playlist</h3>
         <input 
             id="playlistNameInput"
             type="text"
-            placeholder="New playlist name"
+            placeholder="Playlist name"
         >
-        <button id="createPlaylistBtn">Create Playlist</button>
+        <button id="createPlaylistBtn">Create</button>
 
         <p id="message" style="margin-top: 10px; color: #ff8a8a;"></p>
 
         <!-- Playlist List -->
         <div class="section">
-            <h3>Playlist List</h3>
+            <h3>All Playlists</h3>
             <div id="playlistsContainer"></div>
         </div>
 
         <!-- Back + Logout -->
-        <button class="btn-secondary" onclick="window.location.href='home.html'" style="margin-top: 20px;">
+        <button 
+            class="btn-secondary"
+            onclick="window.location.href='home.html'"
+            style="margin-top: 20px;"
+        >
             Back to Home
         </button>
 
-        <button id="logoutBtn" style="background:#cc4b4b; margin-top: 10px;">
+        <button 
+            id="logoutBtn" 
+            style="background:#cc4b4b; margin-top: 10px;"
+        >
             Logout
         </button>
+
     </div>
 
     <script src="playlists.js"></script>

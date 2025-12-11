@@ -1,4 +1,4 @@
-// Redirect if already logged in i
+// Redirect if already logged in
 if (localStorage.getItem("token")) {
     window.location.href = "home.html";
 }
@@ -6,9 +6,10 @@ if (localStorage.getItem("token")) {
 document.getElementById("loginBtn").addEventListener("click", async () => {
     const email = document.getElementById("emailInput").value;
     const password = document.getElementById("passwordInput").value;
+    const adminChecked = document.getElementById("adminCheck").checked;
     const msg = document.getElementById("message");
 
-    msg.innerText = ""; // clear old messages
+    msg.innerText = "";
 
     if (!email || !password) {
         msg.innerText = "Please fill all fields.";
@@ -30,10 +31,9 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
 
         const data = await response.json();
 
-        // Save token
         localStorage.setItem("token", data.token);
+        localStorage.setItem("adminMode", adminChecked ? "true" : "false");
 
-        // Redirect
         window.location.href = "home.html";
 
     } catch (error) {

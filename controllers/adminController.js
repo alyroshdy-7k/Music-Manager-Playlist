@@ -24,6 +24,23 @@ const updateUserRole = (req, res) => {
   });
 };
 
-module.exports = {
-  updateUserRole
+// Get all users (admin only)
+const getAllUsers = (req, res) => {
+
+  const query = "SELECT id, username, email, role FROM users";
+
+  db.all(query, [], (err, rows) => {
+    if (err) {
+      console.log("Error fetching users:", err);
+      return res.status(500).json({ error: "Database error fetching users" });
+    }
+
+    res.status(200).json({
+      message: "Users fetched successfully",
+      users: rows
+    });
+  });
 };
+
+
+module.exports = {updateUserRole,getAllUsers};
