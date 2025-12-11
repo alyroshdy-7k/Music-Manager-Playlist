@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Share Playlist</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <h2>Share a Playlist</h2>
+        <p style="color:#c7b7e8;">Select a playlist and share it with another user.</p>
+
+        <!-- Choose Playlist -->
+        <label style="margin-top:15px;">Select Playlist</label>
+        <select id="playlistDropdown" class="input"></select>
+
+        <!-- User receiving -->
+        <label style="margin-top:15px;">Receiver User ID</label>
+        <input type="number" id="receiverIdInput" placeholder="Enter user ID" class="input">
+
+        <!-- Access level -->
+        <label style="margin-top:15px;">Access Level</label>
+        <select id="accessLevelInput" class="input">
+            <option value="view">View</option>
+            <option value="edit">Edit</option>
+        </select>
+
+        <button id="shareBtn" class="btn" style="margin-top:20px;">Share Playlist</button>
+
+        <p id="message" style="margin-top:15px;"></p>
+
+        <hr style="border:1px solid #9a4aff33; margin:30px 0;">
+
+        <h3>Playlists Shared With You</h3>
+        <div id="sharedContainer" class="section"></div>
+
+        <button class="btn-secondary" onclick="window.location.href='home.html'" style="margin-top: 20px;">
+            Back to Home
+        </button>
+
+        <button id="logoutBtn" style="background:#cc4b4b; margin-top: 10px;">
+            Logout
+        </button>
+
+    </div>
+
+    <script src="sharing.js"></script>
+</body>
+</html>

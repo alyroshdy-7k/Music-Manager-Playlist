@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Songs</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <h2>Available Songs</h2>
+        <p style="color:#c7b7e8;">Browse all available songs and add them to your playlists.</p>
+
+        <!-- Songs list -->
+        <div id="availableSongsContainer" class="section"></div>
+
+        <hr style="border: 1px solid #9a4aff33; margin: 25px 0;">
+
+        <h3>Songs in This Playlist</h3>
+        <p style="color:#c7b7e8;">These are the songs already inside the selected playlist.</p>
+
+        <!-- Playlist Songs -->
+        <div id="playlistSongsContainer" class="section"></div>
+
+        <!-- Navigation -->
+        <button class="btn-secondary" onclick="window.location.href='home.html'" style="margin-top: 20px;">
+            Back to Home
+        </button>
+
+        <button id="logoutBtn" style="background:#cc4b4b; margin-top: 10px;">
+            Logout
+        </button>
+
+    </div>
+
+    <script src="songs.js"></script>
+</body>
+</html>

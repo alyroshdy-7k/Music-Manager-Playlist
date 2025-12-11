@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <!-- Global purple theme -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Welcome Back</h2>
+        <p>Please log in to continue</p>
+
+        <!-- Email -->
+        <input
+            type="email"
+            id="emailInput"
+            placeholder="Enter your email"
+        />
+
+        <!-- Password -->
+        <input
+            type="password"
+            id="passwordInput"
+            placeholder="Enter your password"
+        />
+
+        <!-- Login button -->
+        <button id="loginBtn">Login</button>
+
+        <!-- Message (errors, etc.) -->
+        <p id="message" style="color: #ff8a8a; margin-top: 8px;"></p>
+
+        <!-- Link to signup -->
+        <p style="margin-top: 15px;">
+            Don't have an account?
+            <a href="signup.html">Create one</a>
+        </p>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>

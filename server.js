@@ -3,6 +3,9 @@ const db_access = require('./models/db.js');  // Import database setup
 const db = db_access.db;  // Access SQLite database instance
 const authRoutes = require('./routes/authRoutes');  // Import authRoutes
 const playlistRoutes = require('./routes/playlistRoutes');  // Import playlistRoutes
+const express = require("express");
+
+app.use(express.static('public'));
 
 const PORT = 3001;  // Port for server
 

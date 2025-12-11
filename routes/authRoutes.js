@@ -10,7 +10,7 @@ router.post('/signup', signup);
 
 // Define login route, 
 router.post('/login', login);
-
+// Get current user information
 router.get('/me', protect, getMe);
 
 // Define logout route,
