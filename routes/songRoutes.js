@@ -4,19 +4,18 @@ const router = express.Router();
 const {
   getAvailableSongs,
   addSongToPlaylist,
-  getSongsForPlaylist,
-  removeSongFromPlaylist
+  getSongsForPlaylist
 } = require('../controllers/songController');
 
 const { protect } = require('../middlewares/authMiddleware');
 
-// Get all available songs user can choose from
+// Get catalog songs
 router.get('/available', protect, getAvailableSongs);
 
-// Add existing song to playlist (by songId)
+// Add song to playlist
 router.post('/add', protect, addSongToPlaylist);
 
-// Get songs in a playlist
+// Get songs of playlist
 router.get('/all', protect, getSongsForPlaylist);
 
 module.exports = router;

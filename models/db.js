@@ -1,7 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('musicManager.db'); // SQLite database for your app
+const db = new sqlite3.Database('musicManager.db');
 
-// SQL to create User Table
+// Create User Table
 const createUserTable = `
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -12,7 +12,7 @@ const createUserTable = `
   );
 `;
 
-// SQL to create Playlist Table
+// Create Playlist Table
 const createPlaylistTable = `
   CREATE TABLE IF NOT EXISTS playlists (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -22,18 +22,27 @@ const createPlaylistTable = `
   );
 `;
 
-// SQL to create Song Table
+// Create Song Table (FIXED: removed playlist_id)
 const createSongTable = `
   CREATE TABLE IF NOT EXISTS songs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
-    artist TEXT,
-    playlist_id INTEGER,
-    FOREIGN KEY(playlist_id) REFERENCES playlists(id)
+    artist TEXT NOT NULL
   );
 `;
 
-// SQL to create Favourites Table
+// Create Playlist_Songs Table (link table)
+const createPlaylistSongsTable = `
+  CREATE TABLE IF NOT EXISTS playlist_songs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    playlist_id INTEGER NOT NULL,
+    song_id INTEGER NOT NULL,
+    FOREIGN KEY(playlist_id) REFERENCES playlists(id),
+    FOREIGN KEY(song_id) REFERENCES songs(id)
+  );
+`;
+
+// Create Favourites Table
 const createFavouritesTable = `
   CREATE TABLE IF NOT EXISTS favourites (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,7 +53,7 @@ const createFavouritesTable = `
   );
 `;
 
-// SQL to create Shared Playlists Table 
+// Create Shared Playlists Table
 const createSharedPlaylistsTable = `
   CREATE TABLE IF NOT EXISTS shared_playlists (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -59,84 +68,50 @@ const createSharedPlaylistsTable = `
   );
 `;
 
-// Function to insert dummy songs (dummy data) into the database
+// Dummy Songs (fixed: no playlist_id)
 const insertDummySongs = () => {
   const dummySongs = [
-    { title: 'Dummy Song 1', artist: 'Dummy Artist 1', playlist_id: 1 },
-    { title: 'Dummy Song 2', artist: 'Dummy Artist 2', playlist_id: 1 },
-    { title: 'Dummy Song 3', artist: 'Dummy Artist 3', playlist_id: 2 },
-    { title: 'Dummy Song 4', artist: 'Dummy Artist 4', playlist_id: 2 },
-
-    
-    { title: 'Dummy Song 5', artist: 'Dummy Artist 5', playlist_id: 1 },
-    { title: 'Dummy Song 6', artist: 'Dummy Artist 6', playlist_id: 1 },
-    { title: 'Dummy Song 7', artist: 'Dummy Artist 7', playlist_id: 2 },
-    { title: 'Dummy Song 8', artist: 'Dummy Artist 8', playlist_id: 2 },
-    { title: 'Dummy Song 9', artist: 'Dummy Artist 9', playlist_id: 1 },
-];
-
+    { title: 'Dummy Song 1', artist: 'Dummy Artist 1' },
+    { title: 'Dummy Song 2', artist: 'Dummy Artist 2' },
+    { title: 'Dummy Song 3', artist: 'Dummy Artist 3' },
+    { title: 'Dummy Song 4', artist: 'Dummy Artist 4' },
+    { title: 'Dummy Song 5', artist: 'Dummy Artist 5' },
+    { title: 'Dummy Song 6', artist: 'Dummy Artist 6' },
+    { title: 'Dummy Song 7', artist: 'Dummy Artist 7' },
+    { title: 'Dummy Song 8', artist: 'Dummy Artist 8' },
+    { title: 'Dummy Song 9', artist: 'Dummy Artist 9' }
+  ];
 
   dummySongs.forEach(song => {
-    const query = "INSERT INTO songs (title, artist, playlist_id) VALUES (?, ?, ?)";
-    const params = [song.title, song.artist, song.playlist_id];
-    
-    db.run(query, params, (err) => {
-      if (err) {
-        console.log("Error adding dummy song:", err);
-      }
-    });
+    db.run("INSERT INTO songs (title, artist) VALUES (?, ?)", [
+      song.title,
+      song.artist
+    ]);
   });
 };
 
-// Create the tables and insert dummy data if necessary
+// Create Tables
 db.serialize(() => {
-  // Create User Table
-  db.run(createUserTable, (err) => {
-    if (err) console.error("Error creating user table:", err.message);
-  });
+  db.run(createUserTable);
+  db.run(createPlaylistTable);
+  db.run(createSongTable);
+  db.run(createPlaylistSongsTable);
+  db.run(createFavouritesTable);
+  db.run(createSharedPlaylistsTable);
 
-  // Create Playlist Table
-  db.run(createPlaylistTable, (err) => {
-    if (err) console.error("Error creating playlist table:", err.message);
-  });
-
-  // Create Song Table
-  db.run(createSongTable, (err) => {
-    if (err) console.error("Error creating song table:", err.message);
-  });
-
-  // Create Favourites Table
-  db.run(createFavouritesTable, (err) => {
-    if (err) console.error("Error creating favourites table:", err.message);
-  });
-
-  // Create Shared Playlists Table
-  db.run(createSharedPlaylistsTable, (err) => {
-    if (err) console.error("Error creating shared playlists table:", err.message);
-  });
-
-  // Insert dummy songs (only run if the songs table is empty)
   db.get("SELECT COUNT(*) AS count FROM songs", (err, row) => {
-    if (err) {
-      console.error("Error checking songs count:", err.message);
-      return;
-    }
-
     if (row.count === 0) {
-      console.log("Songs table is empty, inserting dummy songs...");
       insertDummySongs();
-    } else {
-      console.log("Songs table already has data, skipping dummy insert.");
     }
   });
 });
 
-// Export db and table creation queries
 module.exports = {
   db,
   createUserTable,
   createPlaylistTable,
   createSongTable,
+  createPlaylistSongsTable,
   createFavouritesTable,
-  createSharedPlaylistsTable // Export shared playlists table
+  createSharedPlaylistsTable
 };
