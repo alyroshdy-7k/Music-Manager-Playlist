@@ -158,7 +158,7 @@ const getMe = (req, res) => {
 // Get all users (Admin-only)
 const getAllUsers = (req, res) => {
 
-  // 🚨 IMPORTANT: Only admins allowed
+  // IMPORTANT: Only admins allowed
   if (req.user.role !== "admin") {
     return res.status(403).json({ error: "Admins only" });
   }

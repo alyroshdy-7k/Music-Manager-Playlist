@@ -4,10 +4,9 @@ if (!token) {
     window.location.href = "login.html";
 }
 
-// Fetch user info
 async function loadUser() {
     try {
-        const res = await fetch("/auth/me", {
+        const res = await fetch("http://localhost:3001/auth/me", {
             headers: {
                 Authorization: "Bearer " + token
             }
@@ -19,26 +18,30 @@ async function loadUser() {
         }
 
         const data = await res.json();
-        const username = data.user.username;
 
+        // Welcome text
         document.getElementById("welcomeText").innerText =
-            `Hey ${username}, Enjoy your music!`;
+            `Hey ${data.user.username}, enjoy your music!`;
+
+        // SHOW PROFILE (GET ME)
+        document.getElementById("profileUsername").innerText = data.user.username;
+        document.getElementById("profileEmail").innerText = data.user.email;
+        document.getElementById("profileRole").innerText = data.user.role;
+        document.getElementById("profileBox").style.display = "block";
+
+        // Admin link based on REAL role from backend
+        if (data.user.role === "admin") {
+            document.getElementById("adminLink").style.display = "block";
+        }
 
     } catch (err) {
         document.getElementById("welcomeText").innerText = "Welcome!";
     }
 }
 
-// Show admin link if admin mode is enabled
-const adminMode = localStorage.getItem("adminMode");
-if (adminMode === "true") {
-    document.getElementById("adminLink").style.display = "block";
-}
-
 // Logout
 document.getElementById("logoutBtn").addEventListener("click", () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("adminMode");
     window.location.href = "login.html";
 });
 

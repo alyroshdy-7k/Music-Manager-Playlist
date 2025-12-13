@@ -87,7 +87,7 @@ const deletePlaylist = (req, res) => {
     }
 
     // 2) Delete songs in that playlist
-    const deleteSongsQuery = "DELETE FROM songs WHERE playlist_id = ?";
+    const deleteSongsQuery = "DELETE FROM playlist_songs WHERE playlist_id = ?";
     db.run(deleteSongsQuery, [playlist_id], (err) => {
       if (err) {
         console.log("Error deleting songs from playlist:", err);
@@ -96,7 +96,7 @@ const deletePlaylist = (req, res) => {
 
       // 3) Delete the playlist itself
       const deletePlaylistQuery = "DELETE FROM playlists WHERE id = ?";
-      db.run(deletePlaylistQuery, [playlist_id], function (err) {
+      db.run(deletePlaylistQuery, playlist_id, function (err) {
         if (err) {
           console.log("Error deleting playlist:", err);
           return res.status(500).json({ error: "Error deleting playlist" });

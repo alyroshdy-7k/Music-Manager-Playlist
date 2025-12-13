@@ -32,9 +32,9 @@ document.getElementById("createPlaylistBtn").addEventListener("click", async () 
             body: JSON.stringify({ name })
         });
 
-        const text = await response.text();
+        const result = await response.json();
 
-        msg.innerText = text;
+        msg.innerText = result.message;
         loadPlaylists(); // refresh list
     } catch (error) {
         msg.innerText = "Something went wrong.";
@@ -106,10 +106,13 @@ async function renamePlaylist(id) {
 async function deletePlaylist(id) {
     if (!confirm("Are you sure?")) return;
 
-    await fetch(`/playlists/${id}`, {
+    const response = await fetch(`/playlists/${id}`, {
         method: "DELETE",
         headers: { "Authorization": "Bearer " + token }
     });
+
+    const result = await response.json();
+    alert(result.message); // or show it on page
 
     loadPlaylists();
 }
